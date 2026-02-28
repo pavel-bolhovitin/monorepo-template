@@ -1,3 +1,15 @@
 {
-  "extends": "@pkg/typescript-config/app-nextjs.json"
+  "extends": "@pkg/typescript-config/app-nextjs.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": [
+    "node_modules",
+    "out"
+  ]
 }

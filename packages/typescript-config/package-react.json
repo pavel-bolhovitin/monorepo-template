@@ -4,11 +4,5 @@
         "declaration": true,
         "declarationMap": true,
         "incremental": false
-    },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts"
-    ],
-    "exclude": []
+    }
 }
