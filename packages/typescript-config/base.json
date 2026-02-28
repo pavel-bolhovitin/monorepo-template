@@ -1,27 +1,21 @@
 {
-    "compilerOptions": {
-        "esModuleInterop": true,
-        "isolatedModules": true,
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "target": "ES2017",
-        "skipLibCheck": true,
-        "module": "esnext",
-        "moduleDetection": "force",
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "strict": true,
-        "noUncheckedIndexedAccess": true,
-        "allowJs": true,
-        "jsx": "react-jsx",
-        "baseUrl": ".",
-        "paths": {
-            "@/*": [
-                "./src/*"
-            ]
-        }
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2017",
+    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
     }
+  }
 }

@@ -1,12 +1,12 @@
 {
-    "extends": "./base.json",
-    "compilerOptions": {
-        "incremental": true,
-        "noEmit": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ]
-    }
+  "extends": "./base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "noEmit": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  }
 }

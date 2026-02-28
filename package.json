@@ -10,7 +10,12 @@
   "engines": {
     "node": "22.22.0"
   },
+  "scripts": {
+    "lint": "biome check",
+    "format": "biome format --write"
+  },
   "devDependencies": {
-    "@pkg/typescript-config": "workspace:*"
+    "@pkg/typescript-config": "workspace:*",
+    "@biomejs/biome": "2.4.4"
   }
 }
