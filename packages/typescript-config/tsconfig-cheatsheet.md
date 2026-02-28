@@ -235,4 +235,79 @@ import * as React from 'react';
 
 ---
 
+## `noEmit`
+
+**Purpose:** TypeScript only type-checks; it does not emit any `.js`, `.d.ts`, or other output. Used when a bundler (Next, Vite, esbuild) does the emit.
+
+**Example:** With `noEmit: true`, `tsc` exits with 0 only if types are valid; no `dist/` or `.js` files. Next.js/Vite run their own transpilation, so `tsc` is often used only for checking (e.g. `tsc --noEmit` in CI).
+
+**Recommendations:**
+
+| Context   | Use |
+|-----------|-----|
+| **Package** (for web app) | `false` — you usually emit JS + `.d.ts` for consumers |
+| **App** (bundled) | `true` — bundler emits; use `tsc` for type-check only |
+
+---
+
+## `jsx`
+
+**Purpose:** How TypeScript transforms JSX: emit as-is, to React.createElement, or to the new JSX runtime (e.g. `react-jsx`). Affects both type-checking and emitted code when `tsc` emits.
+
+**Example:** `"react"` → `React.createElement(...)`. `"react-jsx"` → `_jsx(...)` (no React in scope). `"react-jsxdev"` = dev version of react-jsx. `"preserve"` → leave JSX for another tool (e.g. Babel). With `noEmit: true`, only typing behavior matters.
+
+**Recommendations:**
+
+| Context   | Use |
+|-----------|-----|
+| **Package** (for web app, React) | `"react-jsx"` — modern runtime; or `"react"` for older React |
+| **App** (React, bundler) | `"react-jsx"` (or what your framework sets, e.g. Next.js) |
+
+---
+
+## `baseUrl`
+
+**Purpose:** Base directory for resolving non-relative module names. Required for `paths`; also lets `import 'utils/foo'` resolve from project root instead of `node_modules`.
+
+**Example:** With `"baseUrl": "."` (or `"./"`), `import { x } from 'src/utils'` can resolve to `./src/utils` when combined with `paths`. Without `baseUrl`, `paths` are resolved relative to the config file.
+
+**Recommendations:**
+
+| Context   | Use |
+|-----------|-----|
+| **Package** (for web app) | `"."` if you use `paths`; else omit |
+| **App** | `"."` — common with path aliases (`@/components`, etc.) |
+
+---
+
+## `paths`
+
+**Purpose:** Map import specifiers to actual paths (path aliases). Only affects type-checking; bundler must be configured separately (e.g. Next.js `compilerOptions.paths`, Vite `resolve.alias`).
+
+**Example:** `"@/*": ["./src/*"]` lets you write `import { Button } from '@/components/Button'` instead of `'../../../components/Button'`. TS resolves types; Next/Vite resolve at build time.
+
+**Recommendations:**
+
+| Context   | Use |
+|-----------|-----|
+| **Package** (for web app) | Usually omit — avoid aliases that consumers must mirror |
+| **App** | Use with `baseUrl` for `@/...` or `~/...`; keep in sync with bundler |
+
+---
+
+## `plugins`
+
+**Purpose:** TypeScript language/service plugins that run during type-checking. They can add custom diagnostics, transform types, or integrate with the editor (e.g. Next.js plugin adds checks for pages, config, and conventions).
+
+**Example:** `"plugins": [{ "name": "next" }]` enables the Next.js TypeScript plugin: checks for invalid `next/head`/`next/image` usage, enforces route and config conventions, etc. Plugins are loaded by `tsc` and by the editor when it uses the project’s tsconfig.
+
+**Recommendations:**
+
+| Context   | Use |
+|-----------|-----|
+| **Package** (for web app) | Omit unless the package is a framework/tool that provides a plugin |
+| **App** (Next.js) | `[{ "name": "next" }]` in the app’s tsconfig (or in shared nextjs config) |
+
+---
+
 <!-- Add more keys below in the same format -->

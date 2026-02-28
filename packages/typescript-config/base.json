@@ -15,8 +15,17 @@
         "resolveJsonModule": true,
         "strict": true,
         "noUncheckedIndexedAccess": true,
-        "allowJs": true
+        "allowJs": true,
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        }
     },
     "include": [],
-    "exclude": []
+    "exclude": [
+        "node_modules"
+    ]
 }
