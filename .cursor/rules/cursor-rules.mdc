@@ -1,0 +1,9 @@
+---
+description: How to write Cursor rules in this project
+globs: .cursor/rules/**/*
+alwaysApply: false
+---
+
+# Cursor Rules
+
+- **Language**: Write rule content in **English** only, unless the user's requirements explicitly ask for another language.

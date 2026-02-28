@@ -1,0 +1,11 @@
+---
+description: README.md style — minimal, one command per code block
+globs: **/README.md
+alwaysApply: false
+---
+
+# README.md
+
+- **Keep it minimal** — only what's needed so anyone can read it quickly. No extra sections or long explanations.
+- **Commands** — put each command in its own code block (its own ` ```bash ` box) for easy copying.
+- **Language**: Write content in **English** only, unless the user's requirements explicitly ask for another language.
