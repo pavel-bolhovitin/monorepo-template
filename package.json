@@ -1,0 +1,13 @@
+{
+  "name": "monorepo-template",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Monorepo template",
+  "author": "Pavels Bolhovitins",
+  "license": "MIT",
+  "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": "22.22.0"
+  }
+}
