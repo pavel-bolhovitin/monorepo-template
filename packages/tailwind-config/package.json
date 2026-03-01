@@ -5,7 +5,7 @@
   "private": true,
   "exports": {
     ".": "./src/styles/globals.css",
-    "./postcssConfig": "./postcss.config.mjs"
+    "./postcss": "./postcss.config.mjs"
   },
   "devDependencies": {
     "tailwindcss": "4.2.1",
