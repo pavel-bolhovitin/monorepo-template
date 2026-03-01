@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @import "@repo/tailwind-config";
+
+@theme inline {
+  --color-brand-100: oklch(0.98 0.02 250);
+  --color-brand-200: oklch(0.92 0.06 252);
+  --color-brand-300: oklch(0.75 0.12 255);
+  --color-brand-400: oklch(0.55 0.18 260);
+  --color-brand-600: oklch(0.45 0.16 258);
+  --color-brand-800: oklch(0.28 0.12 255);
+}
