@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @import "@repo/tailwind-config";
+
+/**
+ * Scan files in this package so Tailwind keeps classes used here.
+ * Used for apps that import this package and transpile it (e.g. Next.js).
+ */
+@source "../**/*.{js,ts,jsx,tsx}";
