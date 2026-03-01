@@ -15,7 +15,7 @@
     "format": "biome format --write"
   },
   "devDependencies": {
-    "@pkg/typescript-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@biomejs/biome": "2.4.4"
   }
 }
