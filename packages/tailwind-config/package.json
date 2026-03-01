@@ -1,0 +1,14 @@
+{
+  "name": "@repo/tailwind-config",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": ".src/styles/globals.css",
+    "./postcss": "./postcss.config.js"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.2.1",
+    "@tailwindcss/postcss": "4.2.1"
+  }
+}
