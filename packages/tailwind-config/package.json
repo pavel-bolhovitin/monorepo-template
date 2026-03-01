@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "exports": {
-    ".": ".src/styles/globals.css",
-    "./postcss": "./postcss.config.js"
+    ".": "./src/styles/globals.css",
+    "./postcss": "./postcss.config.mjs"
   },
   "devDependencies": {
     "tailwindcss": "4.2.1",
