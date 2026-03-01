@@ -1,5 +1,6 @@
 import { PaletteShowcase } from "@repo/ui";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Button } from "@repo/ui";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +19,18 @@ export default function Home() {
     >
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <h1 className="text-2xl font-bold">Hello World</h1>
+            <div className="flex gap-2">
+              <Button>Click me</Button>
+              <Button variant="outline">Click me</Button>
+              <Button variant="secondary">Click me</Button>
+              <Button variant="ghost">Click me</Button>
+              <Button variant="destructive">Click me</Button>
+              <Button variant="link">Click me</Button>
+            </div>
+          </div>
+
           <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <p className="mb-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
               App config
@@ -29,6 +42,7 @@ export default function Home() {
               <span className="h-12 w-12 rounded-lg bg-brand-800" title="800" />
             </div>
           </div>
+
           <PaletteShowcase />
           <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <p className="mb-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
