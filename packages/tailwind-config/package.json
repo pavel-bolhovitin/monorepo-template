@@ -5,10 +5,16 @@
   "private": true,
   "exports": {
     ".": "./src/styles/globals.css",
-    "./postcss": "./postcss.config.mjs"
+    "./postcssConfig": "./postcss.config.mjs"
+  },
+  "peerDependencies": {
+    "tailwindcss": "4.2.1",
+    "@tailwindcss/postcss": "4.2.1",
+    "postcss": "8.5.6"
   },
   "devDependencies": {
     "tailwindcss": "4.2.1",
-    "@tailwindcss/postcss": "4.2.1"
+    "@tailwindcss/postcss": "4.2.1",
+    "postcss": "8.5.6"
   }
 }
