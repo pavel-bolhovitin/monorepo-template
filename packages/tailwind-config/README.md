@@ -10,7 +10,7 @@ In your package’s `package.json`:
 
 ```json
 {
-  "dependencies": {
+  "devDependencies": {
     "@repo/tailwind-config": "workspace:*"
   }
 }
