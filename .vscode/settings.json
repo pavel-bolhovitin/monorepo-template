@@ -3,5 +3,16 @@
   "editor.formatOnSave": true,
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
+  },
+  "tailwindCSS.classFunctions": ["cva"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "files.exclude": {
+    "**/.next": true,
+    "**/node_modules": true
   }
 }
