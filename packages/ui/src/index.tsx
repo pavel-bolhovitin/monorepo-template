@@ -1,3 +1,3 @@
 export { PaletteShowcase } from "./PaletteShowcase";
-export { Button } from "./components/ui/button";
+export * from "./components/ui/index.generated";
 export { cn } from "./lib/utils";
