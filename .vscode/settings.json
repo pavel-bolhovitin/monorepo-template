@@ -5,6 +5,10 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "tailwindCSS.classFunctions": ["cva"],
+  "tailwindCSS.experimental.configFile": {
+    "packages/ui/src/styles/globals.css": "packages/ui/src/**",
+    "apps/web/src/styles/globals.css": "apps/web/src/**"
+  },
   "files.associations": {
     "*.css": "tailwindcss"
   },
