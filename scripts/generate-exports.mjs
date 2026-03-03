@@ -121,7 +121,9 @@ function normalizeEntry(entry) {
   if (typeof entry === "string") {
     return { dir: path.join(ROOT, entry), indexFile: "index.generated.ts" };
   }
-  const dir = path.isAbsolute(entry.dir) ? entry.dir : path.join(ROOT, entry.dir);
+  const dir = path.isAbsolute(entry.dir)
+    ? entry.dir
+    : path.join(ROOT, entry.dir);
   return { dir, indexFile: entry.indexFile ?? "index.generated.ts" };
 }
 

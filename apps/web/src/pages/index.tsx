@@ -1,6 +1,5 @@
-import { PaletteShowcase } from "@repo/ui";
+import { Button, PaletteShowcase } from "@repo/ui";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Button } from "@repo/ui";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
