@@ -69,7 +69,7 @@ Apply these rules to React components and hooks unless the user explicitly reque
 ## Example (component)
 
 ```tsx
-import { cn } from "@repo/ui/utils";
+import { cn } from "@repo/ui";
 import type { ReactNode } from "react";
 
 type CardProps = {
@@ -96,7 +96,7 @@ export default Card;
 ## Example (compound component, dot notation)
 
 ```tsx
-import { cn } from "@repo/ui/utils";
+import { cn } from "@repo/ui";
 import type { ReactNode } from "react";
 
 export type CardRootProps = {
