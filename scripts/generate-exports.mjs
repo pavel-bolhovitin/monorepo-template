@@ -1,7 +1,7 @@
 /**
  * Generates index files with exports for shadcn UI components.
  *
- * Run: node scripts/generate-shadcn-exports.mjs
+ * Run: pnpm run generate:exports  (or: node scripts/generate-exports.mjs)
  *
  * Configure PATHS below: each entry is a folder to scan; an index file
  * with re-exports is generated in that folder.
