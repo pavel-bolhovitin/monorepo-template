@@ -17,6 +17,7 @@ Every file under `.agents/` that defines rules or context must be listed here. A
 
 - [.agents/common-rule.md](./common-rule.md) — Language and general rules
 - [.agents/react-rule.md](./react-rule.md) — React component conventions
+- [.agents/readonly-rule.md](./readonly-rule.md) — Readonly file handling from workspace settings
 - [.agents/ui-package.md](./ui-package.md) — UI package barrel and generate-exports
 
 ## Commands

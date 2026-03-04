@@ -41,11 +41,19 @@ Apply these rules to React components and hooks unless the user explicitly reque
 
 ## Types
 
-- **Placement:** Put type definitions at the **top of the file**, directly under the imports. No blank lines between imports and types.
+- **Placement:** Put type definitions at the **top of the file**, directly under the imports.
 - **Prefer `type`:** Use `type` for component-related types (including props), not `interface`, unless the user or requirements say otherwise.
 - **Props type name:** Name the component’s props type `{ComponentName}Props` (e.g. `ButtonProps` for `Button`).
 - **Props export:** The main component's props type must be **exported** (e.g. `export type CardRootProps = ...`).
 - **Spacing:** Separate each `type` or `interface` definition with **one blank line**.
+- **Blank lines around definitions:** Every `type` or `interface` definition must have one empty line above and one empty line below it.
+
+## Documentation and comments
+
+- **JSDoc has priority:** When documentation is needed, prefer JSDoc over regular code comments (`//` or `/* ... */`).
+- **Add docs only when needed:** Add JSDoc/comments only when explicitly requested by the user, or when the code contains complex logic or business logic.
+- **Props links in JSDoc:** In JSDoc for props, prefer `{@link ...}` references to prop names instead of plain text.
+- **English only:** Write JSDoc and code comments in English only.
 
 ## Compound components (dot notation)
 
@@ -65,6 +73,10 @@ Apply these rules to React components and hooks unless the user explicitly reque
 
 - **Multiline hooks:** Separate multiline hook calls from each other with **one blank line**.
 - **Single-line hooks:** Single-line hooks may stay back-to-back; blank lines between them are optional.
+
+## Function spacing
+
+- **Blank lines around functions:** Any function (component, hook, local helper, function declaration, or function expression) must have one empty line above and one empty line below it.
 
 ## Example (component)
 
