@@ -4,7 +4,13 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit"
   },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
   "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[css]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "tailwindCSS.classFunctions": ["cva"],
@@ -14,9 +20,6 @@
   },
   "files.associations": {
     "*.css": "tailwindcss"
-  },
-  "editor.quickSuggestions": {
-    "strings": "on"
   },
   "files.exclude": {
     "**/.next": true,

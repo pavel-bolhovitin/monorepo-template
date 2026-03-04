@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "streetsidesoftware.code-spell-checker",
+    "naumovs.color-highlight",
+    "eamodio.gitlens",
+    "christian-kohler.path-intellisense",
+    "PKief.material-icon-theme"
+  ]
+}
