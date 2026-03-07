@@ -20,6 +20,7 @@
   },
   "files.exclude": {
     "**/.next": true,
+    "**/dist": true,
     "**/node_modules": true
   },
   "files.readonlyInclude": {

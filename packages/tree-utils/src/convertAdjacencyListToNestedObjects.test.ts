@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
-import { convertAdjacencyListToNestedObjects } from "./index.js";
-import adjacencyList from "./mocks/adjacency-list.json";
+import { describe, expect, it } from 'vitest';
+import { convertAdjacencyListToNestedObjects } from './convertAdjacencyListToNestedObjects';
+import adjacencyList from './mocks/adjacency-list.json';
 
 type Node = { id: number; parentId: number | null; label: string };
 
@@ -19,9 +19,9 @@ function makeNodes(
   }));
 }
 
-describe("convertAdjacencyListToNestedObjects", () => {
-  describe("basic conversion", () => {
-    it("returns an empty array for an empty input", () => {
+describe('convertAdjacencyListToNestedObjects', () => {
+  describe('basic conversion', () => {
+    it('returns an empty array for an empty input', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes: [] as Node[],
         getId,
@@ -30,7 +30,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(result).toEqual([]);
     });
 
-    it("returns a single root when one node has no parent", () => {
+    it('returns a single root when one node has no parent', () => {
       const input = makeNodes([{ id: 1, parentId: null }]);
       const result = convertAdjacencyListToNestedObjects({
         nodes: input,
@@ -41,7 +41,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(result[0].id).toBe(1);
     });
 
-    it("nests a child under its parent", () => {
+    it('nests a child under its parent', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
@@ -56,7 +56,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(children[0].id).toBe(2);
     });
 
-    it("builds a deep nested tree correctly", () => {
+    it('builds a deep nested tree correctly', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
@@ -76,7 +76,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(l3.id).toBe(4);
     });
 
-    it("attaches multiple children to a parent", () => {
+    it('attaches multiple children to a parent', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
@@ -91,7 +91,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(root.children as Node[]).toHaveLength(3);
     });
 
-    it("handles nodes supplied in reverse order (children before parents)", () => {
+    it('handles nodes supplied in reverse order (children before parents)', () => {
       const input = makeNodes([
         { id: 3, parentId: 2 },
         { id: 2, parentId: 1 },
@@ -110,8 +110,8 @@ describe("convertAdjacencyListToNestedObjects", () => {
     });
   });
 
-  describe("multiple roots", () => {
-    it("returns multiple root nodes when several nodes have no parent", () => {
+  describe('multiple roots', () => {
+    it('returns multiple root nodes when several nodes have no parent', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: null },
@@ -126,8 +126,8 @@ describe("convertAdjacencyListToNestedObjects", () => {
     });
   });
 
-  describe("orphan nodes", () => {
-    it("treats orphan nodes (missing parent) as roots by default", () => {
+  describe('orphan nodes', () => {
+    it('treats orphan nodes (missing parent) as roots by default', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 99, parentId: 42 }, // parent 42 doesn't exist
@@ -141,7 +141,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(result.map((n) => n.id)).toContain(99);
     });
 
-    it("removes orphan nodes when pruneOrphans is true", () => {
+    it('removes orphan nodes when pruneOrphans is true', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 99, parentId: 42 }, // parent 42 doesn't exist
@@ -156,7 +156,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(result[0].id).toBe(1);
     });
 
-    it("keeps legitimate children when pruneOrphans is true", () => {
+    it('keeps legitimate children when pruneOrphans is true', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
@@ -173,11 +173,11 @@ describe("convertAdjacencyListToNestedObjects", () => {
     });
   });
 
-  describe("duplicate IDs", () => {
-    it("keeps only the first occurrence when duplicate IDs exist", () => {
+  describe('duplicate IDs', () => {
+    it('keeps only the first occurrence when duplicate IDs exist', () => {
       const input: Node[] = [
-        { id: 1, parentId: null, label: "First" },
-        { id: 1, parentId: null, label: "Duplicate" },
+        { id: 1, parentId: null, label: 'First' },
+        { id: 1, parentId: null, label: 'Duplicate' },
       ];
       const result = convertAdjacencyListToNestedObjects({
         nodes: input,
@@ -185,19 +185,19 @@ describe("convertAdjacencyListToNestedObjects", () => {
         getParentId,
       });
       expect(result).toHaveLength(1);
-      expect(result[0].label).toBe("First");
+      expect(result[0].label).toBe('First');
     });
   });
 
-  describe("cloneStrategy", () => {
-    it("does not mutate original nodes with the default shallow strategy", () => {
+  describe('cloneStrategy', () => {
+    it('does not mutate original nodes with the default shallow strategy', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
       ]);
       const originalFirst = input[0];
       convertAdjacencyListToNestedObjects({ nodes: input, getId, getParentId });
-      expect("children" in originalFirst).toBe(false);
+      expect('children' in originalFirst).toBe(false);
     });
 
     it("mutates original nodes when cloneStrategy is 'mutate'", () => {
@@ -210,9 +210,9 @@ describe("convertAdjacencyListToNestedObjects", () => {
         nodes: input,
         getId,
         getParentId,
-        cloneStrategy: "mutate",
+        cloneStrategy: 'mutate',
       });
-      expect("children" in originalRoot).toBe(true);
+      expect('children' in originalRoot).toBe(true);
     });
 
     it("returns the same object references when cloneStrategy is 'mutate'", () => {
@@ -221,14 +221,14 @@ describe("convertAdjacencyListToNestedObjects", () => {
         nodes: input,
         getId,
         getParentId,
-        cloneStrategy: "mutate",
+        cloneStrategy: 'mutate',
       });
       expect(result).toBe(input[0]);
     });
   });
 
-  describe("custom childrenKey", () => {
-    it("nests children under the specified key", () => {
+  describe('custom childrenKey', () => {
+    it('nests children under the specified key', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
@@ -237,9 +237,9 @@ describe("convertAdjacencyListToNestedObjects", () => {
         nodes: input,
         getId,
         getParentId,
-        childrenKey: "items",
+        childrenKey: 'items',
       });
-      expect(root).toHaveProperty("items");
+      expect(root).toHaveProperty('items');
       expect((root as unknown as { items: Node[] }).items[0].id).toBe(2);
     });
 
@@ -249,14 +249,14 @@ describe("convertAdjacencyListToNestedObjects", () => {
         nodes: input,
         getId,
         getParentId,
-        childrenKey: "items",
+        childrenKey: 'items',
       });
-      expect(root).not.toHaveProperty("children");
+      expect(root).not.toHaveProperty('children');
     });
   });
 
-  describe("edge cases", () => {
-    it("handles a node with id 0 (falsy id) as a valid child", () => {
+  describe('edge cases', () => {
+    it('handles a node with id 0 (falsy id) as a valid child', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 0, parentId: 1 },
@@ -271,7 +271,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(children[0].id).toBe(0);
     });
 
-    it("initialises every node with an empty children array", () => {
+    it('initialises every node with an empty children array', () => {
       const input = makeNodes([{ id: 1, parentId: null }]);
       const [root] = convertAdjacencyListToNestedObjects({
         nodes: input,
@@ -282,18 +282,18 @@ describe("convertAdjacencyListToNestedObjects", () => {
     });
   });
 
-  describe("includeDepth", () => {
-    it("does not add a depth property when includeDepth is false (default)", () => {
+  describe('includeDepth', () => {
+    it('does not add a depth property when includeDepth is false (default)', () => {
       const input = makeNodes([{ id: 1, parentId: null }]);
       const [root] = convertAdjacencyListToNestedObjects({
         nodes: input,
         getId,
         getParentId,
       });
-      expect(root).not.toHaveProperty("depth");
+      expect(root).not.toHaveProperty('depth');
     });
 
-    it("adds depth 0 to root nodes when includeDepth is true", () => {
+    it('adds depth 0 to root nodes when includeDepth is true', () => {
       const input = makeNodes([{ id: 1, parentId: null }]);
       const [root] = convertAdjacencyListToNestedObjects({
         nodes: input,
@@ -304,7 +304,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect((root as unknown as { depth: number }).depth).toBe(0);
     });
 
-    it("assigns correct depth values across multiple levels", () => {
+    it('assigns correct depth values across multiple levels', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: 1 },
@@ -323,7 +323,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect((grandchild as unknown as { depth: number }).depth).toBe(2);
     });
 
-    it("assigns depth 0 to every root when there are multiple roots", () => {
+    it('assigns depth 0 to every root when there are multiple roots', () => {
       const input = makeNodes([
         { id: 1, parentId: null },
         { id: 2, parentId: null },
@@ -350,10 +350,10 @@ describe("convertAdjacencyListToNestedObjects", () => {
         getId,
         getParentId,
         includeDepth: true,
-        depthKey: "level",
+        depthKey: 'level',
       });
-      expect(root).toHaveProperty("level", 0);
-      expect(root).not.toHaveProperty("depth");
+      expect(root).toHaveProperty('level', 0);
+      expect(root).not.toHaveProperty('depth');
     });
 
     it("works correctly combined with cloneStrategy 'mutate'", () => {
@@ -366,7 +366,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
         getId,
         getParentId,
         includeDepth: true,
-        cloneStrategy: "mutate",
+        cloneStrategy: 'mutate',
       });
       const child = (root.children as Node[])[0];
       expect((root as unknown as { depth: number }).depth).toBe(0);
@@ -374,8 +374,8 @@ describe("convertAdjacencyListToNestedObjects", () => {
     });
   });
 
-  describe("integration — mock adjacency list", () => {
-    it("returns three roots (1, 6, 11) when pruneOrphans is false", () => {
+  describe('integration — mock adjacency list', () => {
+    it('returns three roots (1, 6, 11) when pruneOrphans is false', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes,
         getId,
@@ -389,7 +389,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(rootIds).toContain(11);
     });
 
-    it("returns two roots (1, 6) when pruneOrphans is true", () => {
+    it('returns two roots (1, 6) when pruneOrphans is true', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes,
         getId,
@@ -402,7 +402,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(rootIds).not.toContain(11);
     });
 
-    it("correctly nests the infrastructure subtree (1 → 2 → 3 → [4, 5])", () => {
+    it('correctly nests the infrastructure subtree (1 → 2 → 3 → [4, 5])', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes,
         getId,
@@ -419,7 +419,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(leafIds).toContain(5);
     });
 
-    it("gives node 6 exactly four children (7, 8, 9, 10)", () => {
+    it('gives node 6 exactly four children (7, 8, 9, 10)', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes,
         getId,
@@ -430,7 +430,7 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(childIds.sort((a, b) => a - b)).toEqual([7, 8, 9, 10]);
     });
 
-    it("includes node 0 as a child of node 1", () => {
+    it('includes node 0 as a child of node 1', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes,
         getId,
@@ -441,17 +441,17 @@ describe("convertAdjacencyListToNestedObjects", () => {
       expect(childIds).toContain(0);
     });
 
-    it("excludes cyclic nodes (A → E → C → B → A) from root results", () => {
+    it('excludes cyclic nodes (A → E → C → B → A) from root results', () => {
       const result = convertAdjacencyListToNestedObjects({
         nodes,
         getId,
         getParentId,
       });
       const rootIds = result.map((n) => n.id);
-      expect(rootIds).not.toContain("A");
-      expect(rootIds).not.toContain("B");
-      expect(rootIds).not.toContain("C");
-      expect(rootIds).not.toContain("E");
+      expect(rootIds).not.toContain('A');
+      expect(rootIds).not.toContain('B');
+      expect(rootIds).not.toContain('C');
+      expect(rootIds).not.toContain('E');
     });
   });
 });

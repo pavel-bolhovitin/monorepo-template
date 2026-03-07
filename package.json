@@ -13,7 +13,8 @@
   "scripts": {
     "lint": "biome check",
     "format": "biome format --write",
-    "generate:exports": "node scripts/generate-exports.mjs"
+    "generate:exports": "node scripts/generate-exports.mjs",
+    "clean:node_modules": "node scripts/clean-node-modules.mjs"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
