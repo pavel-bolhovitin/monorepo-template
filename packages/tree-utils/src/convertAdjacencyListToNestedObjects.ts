@@ -58,17 +58,8 @@ import type { CloneStrategy, NodeId } from "./types";
  */
 export function convertAdjacencyListToNestedObjects<
   Node extends Record<string, any>,
->({
-  nodes,
-  getId,
-  getParentId,
-  childrenKey = "children",
-  cloneStrategy = "shallow",
-  pruneOrphans = false,
-  includeDepth = false,
-  depthKey = "depth",
-  nodeKey = "node",
-}: {
+  OutputNode extends Node,
+>(params: {
   nodes: Node[];
   getId: (node: Node) => NodeId;
   getParentId: (node: Node) => NodeId | null | undefined;
@@ -78,7 +69,19 @@ export function convertAdjacencyListToNestedObjects<
   includeDepth?: boolean;
   depthKey?: string;
   nodeKey?: string;
-}) {
+}): OutputNode[] {
+  const {
+    nodes,
+    getId,
+    getParentId,
+    childrenKey = "children",
+    cloneStrategy = "shallow",
+    pruneOrphans = false,
+    includeDepth = false,
+    depthKey = "depth",
+    nodeKey = "node",
+  } = params;
+
   // Phase 1: O(n) - removed duplicates by ID (first occurrence wins), create map of nodes by id
   const nodeMap = new Map<NodeId, any>();
 
@@ -153,7 +156,7 @@ export function convertAdjacencyListToNestedObjects<
     }
   }
 
-  return roots;
+  return roots as unknown as OutputNode[];
 }
 
 function getNode(data: any, cloneStrategy: CloneStrategy, nodeKey: string) {

@@ -7,4 +7,8 @@
 //   // TODO: implement generic tree conversion
 // }
 
-export { convertAdjacencyListToNestedObjects } from './convertAdjacencyListToNestedObjects';
+export { convertAdjacencyListToNestedObjects } from "./convertAdjacencyListToNestedObjects";
+
+// getAdjacencyListChildren(nodes: Node[], nodeId: NodeId): Node[]
+// getAdjacencyListChildrenIds(nodes: Node[], nodeId: NodeId): NodeId[]
+// adjacency-list -> add depth + order by []
