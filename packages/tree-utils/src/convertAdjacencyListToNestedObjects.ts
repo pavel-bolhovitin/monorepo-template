@@ -14,11 +14,8 @@ import type { CloneStrategy, NodeId } from "./types";
  *   Return `null` or `undefined` to mark a node as a root.
  * @param childrenKey - Key used to store child nodes on each output object.
  *   Defaults to `"children"`.
- * @param cloneStrategy - How each node is prepared before insertion into the tree:
- *   - `"shallow"` *(default)* — spreads the node into a new object, leaving the original untouched.
- *   - `"mutate"` — attaches `childrenKey` directly onto the original node object.
- *   - `"wrap"` — creates a new wrapper object `{ [nodeKey]: originalNode, [childrenKey]: [] }`,
- *     keeping the original node fully intact and accessible under `nodeKey`.
+ * @param cloneStrategy - How each node is prepared before insertion into the tree.
+ *   Defaults to `"shallow"`. See {@link CloneStrategy} for details on each variant.
  * @param nodeKey - Key used to store the original node inside its wrapper when
  *   `cloneStrategy` is `"wrap"`. Defaults to `"node"`. Ignored for other strategies.
  * @param pruneOrphans - When `true`, nodes whose parent ID cannot be resolved
