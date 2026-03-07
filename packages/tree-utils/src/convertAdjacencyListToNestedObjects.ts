@@ -6,23 +6,26 @@ import type { CloneStrategy, NodeId } from "./types";
  * Duplicate nodes (same ID, first occurrence wins) and cyclic nodes (where a
  * node is its own ancestor) are silently discarded during tree construction.
  *
- * @template T - Shape of a single node object.
- * @template CKey - The key under which child nodes are nested (default: `"children"`).
+ * @template Node - Shape of a single node object.
  *
  * @param nodes - Flat array of nodes in adjacency-list form.
  * @param getId - Extracts the unique identifier from a node.
  * @param getParentId - Extracts the parent identifier from a node.
  *   Return `null` or `undefined` to mark a node as a root.
- * @param childrenKey - Key used to store child nodes on each node object.
+ * @param childrenKey - Key used to store child nodes on each output object.
  *   Defaults to `"children"`.
- * @param cloneStrategy - How nodes are prepared before insertion:
- *   - `"shallow"` *(default)* — spreads each node into a new object, preserving the original.
- *   - `"mutate"` — attaches `childrenKey` directly onto the original node objects.
+ * @param cloneStrategy - How each node is prepared before insertion into the tree:
+ *   - `"shallow"` *(default)* — spreads the node into a new object, leaving the original untouched.
+ *   - `"mutate"` — attaches `childrenKey` directly onto the original node object.
+ *   - `"wrap"` — creates a new wrapper object `{ [nodeKey]: originalNode, [childrenKey]: [] }`,
+ *     keeping the original node fully intact and accessible under `nodeKey`.
+ * @param nodeKey - Key used to store the original node inside its wrapper when
+ *   `cloneStrategy` is `"wrap"`. Defaults to `"node"`. Ignored for other strategies.
  * @param pruneOrphans - When `true`, nodes whose parent ID cannot be resolved
  *   are silently dropped. When `false` *(default)*, they are promoted to root nodes.
- * @param includeDepth - When `true`, each node will receive a numeric depth property
- *   starting at `0` for root nodes. Defaults to `false`.
- * @param depthKey - Key name used to store the depth value on each node.
+ * @param includeDepth - When `true`, each output object receives a numeric depth
+ *   property starting at `0` for root nodes. Defaults to `false`.
+ * @param depthKey - Key name used to store the depth value on each output object.
  *   Defaults to `"depth"`. Only meaningful when `includeDepth` is `true`.
  *
  * @returns An array of root nodes, each containing its descendants nested
@@ -31,68 +34,95 @@ import type { CloneStrategy, NodeId } from "./types";
  * @example
  * ```ts
  * const flat = [
- *   { id: 1, parentId: null,  name: "root" },
- *   { id: 2, parentId: 1,    name: "child" },
+ *   { id: 1, parentId: null, name: "root" },
+ *   { id: 2, parentId: 1,   name: "child" },
  * ];
  *
+ * // Default (shallow clone)
  * const tree = convertAdjacencyListToNestedObjects({
  *   nodes: flat,
- *   getId:         (n) => n.id,
- *   getParentId:   (n) => n.parentId,
- *   includeDepth:  true,
- *   depthKey:      "level", // optional, defaults to "depth"
+ *   getId:        (n) => n.id,
+ *   getParentId:  (n) => n.parentId,
+ *   includeDepth: true,
+ *   depthKey:     "level",
  * });
  * // [{ id: 1, parentId: null, name: "root", level: 0, children: [{ id: 2, ..., level: 1 }] }]
+ *
+ * // Wrap strategy — original node accessible under "node" key
+ * const wrapped = convertAdjacencyListToNestedObjects({
+ *   nodes: flat,
+ *   getId:          (n) => n.id,
+ *   getParentId:    (n) => n.parentId,
+ *   cloneStrategy:  "wrap",
+ *   nodeKey:        "data",
+ * });
+ * // [{ data: { id: 1, ... }, children: [{ data: { id: 2, ... }, children: [] }] }]
  * ```
  */
 export function convertAdjacencyListToNestedObjects<
-  T extends Record<string, unknown>,
-  CKey extends string,
+  Node extends Record<string, any>,
 >({
   nodes,
   getId,
   getParentId,
-  childrenKey = "children" as CKey,
+  childrenKey = "children",
   cloneStrategy = "shallow",
   pruneOrphans = false,
   includeDepth = false,
   depthKey = "depth",
+  nodeKey = "node",
 }: {
-  nodes: T[];
-  getId: (node: T) => NodeId;
-  getParentId: (node: T) => NodeId | null | undefined;
-  childrenKey?: CKey;
+  nodes: Node[];
+  getId: (node: Node) => NodeId;
+  getParentId: (node: Node) => NodeId | null | undefined;
+  childrenKey?: string;
   cloneStrategy?: CloneStrategy;
   pruneOrphans?: boolean;
   includeDepth?: boolean;
   depthKey?: string;
+  nodeKey?: string;
 }) {
   // Phase 1: O(n) - removed duplicates by ID (first occurrence wins), create map of nodes by id
   const nodeMap = new Map<NodeId, any>();
 
-  for (const node of nodes) {
-    const id = getId(node);
+  switch (cloneStrategy) {
+    case "shallow":
+      for (const node of nodes) {
+        const id = getId(node);
 
-    if (nodeMap.has(id)) continue;
+        if (nodeMap.has(id)) continue;
 
-    switch (cloneStrategy) {
-      case "shallow":
         nodeMap.set(id, { ...node, [childrenKey]: [] });
-        break;
-      case "mutate":
-        node[childrenKey] = [] as T[CKey];
+      }
+      break;
+    case "mutate":
+      for (const node of nodes) {
+        const id = getId(node);
+
+        if (nodeMap.has(id)) continue;
+
+        (node as Record<string, unknown>)[childrenKey] = [];
         nodeMap.set(id, node);
-        break;
-      default:
-        cloneStrategy satisfies never;
-    }
+      }
+      break;
+    case "wrap":
+      for (const node of nodes) {
+        const id = getId(node);
+
+        if (nodeMap.has(id)) continue;
+
+        nodeMap.set(id, { [nodeKey]: node, [childrenKey]: [] });
+      }
+      break;
+    default:
+      cloneStrategy satisfies never;
   }
 
   // Phase 2: O(n) - add node reference to its parent
-  const roots: T[] = [];
+  const roots: Node[] = [];
 
   for (const [, node] of nodeMap) {
-    const parentId = getParentId(node);
+    const parentId = getParentId(getNode(node, cloneStrategy, nodeKey));
 
     if (parentId === null || parentId === undefined) {
       roots.push(node);
@@ -100,7 +130,7 @@ export function convertAdjacencyListToNestedObjects<
       const parentNode = nodeMap.get(parentId);
 
       if (parentNode) {
-        (parentNode[childrenKey] as T[]).push(node);
+        (parentNode[childrenKey] as Node[]).push(node);
       } else if (!pruneOrphans) {
         roots.push(node);
       }
@@ -109,7 +139,7 @@ export function convertAdjacencyListToNestedObjects<
 
   // Phase 3 (optional): O(n) Breadth first search to add depth to each node
   if (includeDepth) {
-    const queue: Array<[T, number]> = roots.map((r) => [r, 0]);
+    const queue: Array<[Node, number]> = roots.map((r) => [r, 0]);
     let qi = 0;
 
     while (qi < queue.length) {
@@ -120,11 +150,23 @@ export function convertAdjacencyListToNestedObjects<
       const [node, depth] = entry;
       (node as Record<string, unknown>)[depthKey] = depth;
 
-      for (const child of node[childrenKey] as T[]) {
+      for (const child of node[childrenKey] as Node[]) {
         queue.push([child, depth + 1]);
       }
     }
   }
 
   return roots;
+}
+
+function getNode(data: any, cloneStrategy: CloneStrategy, nodeKey: string) {
+  switch (cloneStrategy) {
+    case "shallow":
+    case "mutate":
+      return data;
+    case "wrap":
+      return (data as Record<string, any>)[nodeKey];
+    default:
+      cloneStrategy satisfies never;
+  }
 }

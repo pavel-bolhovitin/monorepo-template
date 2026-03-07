@@ -225,6 +225,83 @@ describe('convertAdjacencyListToNestedObjects', () => {
       });
       expect(result).toBe(input[0]);
     });
+
+    it("wraps nodes under the default 'node' key when cloneStrategy is 'wrap'", () => {
+      const input = makeNodes([
+        { id: 1, parentId: null },
+        { id: 2, parentId: 1 },
+      ]);
+      const [root] = convertAdjacencyListToNestedObjects({
+        nodes: input,
+        getId,
+        getParentId,
+        cloneStrategy: 'wrap',
+      });
+      expect(root).toHaveProperty('node');
+      expect((root as unknown as { node: Node }).node.id).toBe(1);
+    });
+
+    it("does not mutate original nodes when cloneStrategy is 'wrap'", () => {
+      const input = makeNodes([
+        { id: 1, parentId: null },
+        { id: 2, parentId: 1 },
+      ]);
+      const originalFirst = input[0];
+      convertAdjacencyListToNestedObjects({
+        nodes: input,
+        getId,
+        getParentId,
+        cloneStrategy: 'wrap',
+      });
+      expect('children' in originalFirst).toBe(false);
+    });
+
+    it("correctly nests children when cloneStrategy is 'wrap'", () => {
+      const input = makeNodes([
+        { id: 1, parentId: null },
+        { id: 2, parentId: 1 },
+      ]);
+      const [root] = convertAdjacencyListToNestedObjects({
+        nodes: input,
+        getId,
+        getParentId,
+        cloneStrategy: 'wrap',
+      });
+      const children = root.children as Array<{ node: Node; children: unknown[] }>;
+      expect(children).toHaveLength(1);
+      expect(children[0].node.id).toBe(2);
+    });
+
+    it("uses a custom nodeKey when cloneStrategy is 'wrap'", () => {
+      const input = makeNodes([{ id: 1, parentId: null }]);
+      const [root] = convertAdjacencyListToNestedObjects({
+        nodes: input,
+        getId,
+        getParentId,
+        cloneStrategy: 'wrap',
+        nodeKey: 'data',
+      });
+      expect(root).toHaveProperty('data');
+      expect(root).not.toHaveProperty('node');
+      expect((root as unknown as { data: Node }).data.id).toBe(1);
+    });
+
+    it("works correctly combined with includeDepth when cloneStrategy is 'wrap'", () => {
+      const input = makeNodes([
+        { id: 1, parentId: null },
+        { id: 2, parentId: 1 },
+      ]);
+      const [root] = convertAdjacencyListToNestedObjects({
+        nodes: input,
+        getId,
+        getParentId,
+        cloneStrategy: 'wrap',
+        includeDepth: true,
+      });
+      const child = (root.children as Array<{ depth: number }>)[0];
+      expect((root as unknown as { depth: number }).depth).toBe(0);
+      expect(child.depth).toBe(1);
+    });
   });
 
   describe('custom childrenKey', () => {
